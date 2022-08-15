@@ -3,6 +3,10 @@ package uk.jlennie.distributed.sync;
 class ConnectionSend<M> {
     private final Connection<M> c;
 
+    public int getReaderID() {
+        return c.getReaderID();
+    }
+
     public ConnectionSend(Connection<M> c) {
         this.c = c;
     }

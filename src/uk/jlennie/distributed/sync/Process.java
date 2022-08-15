@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Process<M, R> {
-    protected int pid;
+    protected final int pid;
     protected List<ConnectionRead<M>> incomingConnections;
     protected List<ConnectionSend<M>> outgoingConnections;
     protected boolean terminated;
