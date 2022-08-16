@@ -39,25 +39,29 @@ class ProcessTest {
     void newOutgoingSendsOne() {
         sut.addNewOutgoing(connectionOut);
 
-        sut.executeCycle();
+        executeCycle();
 
         assertEquals(1, connectionIn.read());
     }
 
+    private void executeCycle() {
+        sut.sendMessages();
+        sut.readMessages();
+    }
+
     @Test
     void notTerminatedAfterOneRound() {
-        sut.executeCycle();
-
+        executeCycle();
         assertFalse(sut.isTerminated());
     }
 
     @Test
     void terminatesFalseAfterTwoRounds() {
         // Round 1
-        sut.executeCycle();
+        executeCycle();
 
         // Round 2
-        sut.executeCycle();
+        executeCycle();
 
         assert(sut.isTerminated());
         assertFalse(sut.getResult());
@@ -68,7 +72,7 @@ class ProcessTest {
         sut.addNewIncoming(connectionIn);
         connectionOut.send(0);
 
-        sut.executeCycle();
+        executeCycle();
 
         assertFalse(sut.isTerminated());
     }
@@ -78,11 +82,11 @@ class ProcessTest {
         sut.addNewIncoming(connectionIn);
         connectionOut.send(0);
 
-        sut.executeCycle();
+        executeCycle();
 
         assertFalse(sut.isTerminated());
 
-        sut.executeCycle();
+        executeCycle();
 
         assert(sut.isTerminated());
         assertFalse(sut.getResult());
@@ -93,7 +97,7 @@ class ProcessTest {
         sut.addNewIncoming(connectionIn);
         connectionOut.send(1);
 
-        sut.executeCycle();
+        executeCycle();
 
         assert(sut.isTerminated());
         assertEquals(sut.getResult(), true);
@@ -111,7 +115,7 @@ class ProcessTest {
 
     @Test
     void readResultBeforeTerminatedAfterOneIterationThrows() {
-        sut.executeCycle();
+        executeCycle();
 
         assertThrows(RuntimeException.class, sut::getResult);
     }

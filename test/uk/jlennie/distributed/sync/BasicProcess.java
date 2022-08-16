@@ -6,6 +6,9 @@ class BasicProcess extends Process<Integer, Boolean> {
     // Otherwise terminates false on second go
     // Sends 1 to all connected processes
 
+    // With controller, will terminate false if has no incoming connections
+    // Otherwise will terminate true
+
     int round;
 
     public BasicProcess(int pid) {
@@ -24,10 +27,15 @@ class BasicProcess extends Process<Integer, Boolean> {
             terminate(false);
         else
             for (var p : incomingConnections)
-                if (p.read() == 1)
-                    terminate(true);
+                processValue(p);
 
         round ++;
 
+    }
+
+    private void processValue(ConnectionRead<Integer> p) {
+        Integer readVal = p.read();
+        if (readVal != null && readVal == 1)
+            terminate(true);
     }
 }

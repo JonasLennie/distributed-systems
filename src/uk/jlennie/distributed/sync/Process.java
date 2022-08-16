@@ -18,11 +18,6 @@ public abstract class Process<M, R> {
         terminated = false;
     }
 
-    public void executeCycle() {
-        sendMessages();
-        readMessages();
-    }
-
     public void addNewIncoming(ConnectionRead<M> newConnection) {
         incomingConnections.add(newConnection);
     }
@@ -31,9 +26,9 @@ public abstract class Process<M, R> {
         outgoingConnections.add(newConnection);
     }
 
-    protected abstract void sendMessages();
+    public abstract void sendMessages();
 
-    protected abstract void readMessages();
+    public abstract void readMessages();
 
     public boolean isTerminated() {
         return terminated;

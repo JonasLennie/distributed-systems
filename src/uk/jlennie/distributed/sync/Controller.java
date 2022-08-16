@@ -32,8 +32,14 @@ public abstract class Controller<M, R> {
 
     private void addConnections(GraphEdge edge) {
         throwIfConnectionHasBadPIDs(edge);
+        throwIfConnectionHasEqualPIDs(edge);
 
         addConnectionSafe(edge);
+    }
+
+    private void throwIfConnectionHasEqualPIDs(GraphEdge edge) {
+        if(edge.getReader() == edge.getSender())
+            throw new RuntimeException("PIDs cannot be equal in connection");
     }
 
     private void throwIfConnectionHasBadPIDs(GraphEdge edge) {
@@ -46,7 +52,9 @@ public abstract class Controller<M, R> {
     }
 
     private void addConnectionSafe(GraphEdge edge) {
-        Connection<M> newConnection = new Connection<>();
+        Connection<M> newConnection = new Connection<>(
+                edge.getSender(), edge.getReader()
+        );
 
         addOutgoingConnection(edge, newConnection);
         addIncomingConnection(edge, newConnection);
@@ -72,7 +80,7 @@ public abstract class Controller<M, R> {
     }
 
     private void addNewProcessForPID(Integer pid) {
-        pidToProcess.put(pid, constructDefaultProcess());
+        pidToProcess.put(pid, constructDefaultProcess(pid));
     }
 
     private void throwIfDuplicatePIDs(List<Integer> processIDs) {
@@ -84,7 +92,7 @@ public abstract class Controller<M, R> {
         return !processIDs.equals(processIDs.stream().distinct().toList());
     }
 
-    abstract protected Process<M, R> constructDefaultProcess();
+    abstract protected Process<M, R> constructDefaultProcess(int pid);
 
     public Map<Integer, R> run() {
         return executor.run();

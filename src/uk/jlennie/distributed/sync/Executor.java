@@ -29,16 +29,26 @@ final class Executor<M, R> {
     }
 
     private void executeOneRound() {
+        sendMessages();
+        readMessages();
+
+        checkForTerminatedProcesses();
+    }
+
+    private void checkForTerminatedProcesses() {
         processesIter = activeProcesses.iterator();
 
         while (processesIter.hasNext()) {
-            runExecutionOfP(processesIter.next());
+            checkTerminated(processesIter.next());
         }
     }
 
-    private void runExecutionOfP(Process<M, R> p) {
-        p.executeCycle();
-        checkTerminated(p);
+    private void readMessages() {
+        activeProcesses.forEach(Process::readMessages);
+    }
+
+    private void sendMessages() {
+        activeProcesses.forEach(Process::sendMessages);
     }
 
     private void checkTerminated(Process<M, R> p) {
