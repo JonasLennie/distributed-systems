@@ -17,9 +17,13 @@ public class CreateRing {
         populatePIDs(numNodes);
 
         if (numNodes == 2)
-            addBidirectional(0, 1);
+            addTwoLink();
         if (numNodes > 2)
             populateConnections(numNodes);
+    }
+
+    protected void addTwoLink() {
+        addLink(0, 1);
     }
 
     private void setup() {
@@ -34,10 +38,10 @@ public class CreateRing {
 
     private void populateConnections(int numNodes) {
         for (int i = 0; i < numNodes; i ++)
-            addBidirectional(i, (i + 1) % numNodes);
+            addLink(i, (i + 1) % numNodes);
     }
 
-    private void addBidirectional(int first, int second) {
+    protected void addLink(int first, int second) {
         connections.add(new GraphEdge(first, second));
         connections.add(new GraphEdge(second, first));
     }

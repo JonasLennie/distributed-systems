@@ -1,10 +1,10 @@
 package uk.jlennie.distributed.sync.ringLeaderElection;
 
 public class LEMessage {
-    boolean leaderIsDeclared;
-    int pid;
+    public boolean leaderIsDeclared;
+    public int pid;
 
-    public LEMessage(boolean isLeaderDeclared, int pid) {
+    public LEMessage(Boolean isLeaderDeclared, Integer pid) {
         leaderIsDeclared = isLeaderDeclared;
         this.pid = pid;
     }

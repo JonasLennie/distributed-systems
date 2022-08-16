@@ -5,18 +5,16 @@ import uk.jlennie.distributed.util.GraphEdge;
 
 import java.util.List;
 
-public abstract class genericRingLEController extends Controller<LEMessage, Boolean> {
-
-
-    public genericRingLEController(int numNodes) {
+public abstract class genericRingLEControllerUni extends Controller<LEMessage, Boolean> {
+    public genericRingLEControllerUni(int numNodes) {
         super(getPIDs(numNodes), getConnections(numNodes));
     }
 
     protected static List<GraphEdge> getConnections(int numNodes) {
-        return new CreateRing(numNodes).getConnection();
+        return new CreateRingUni(numNodes).getConnection();
     }
 
     protected static List<Integer> getPIDs(int numNodes) {
-        return new CreateRing(numNodes).getPIDs();
+        return new CreateRingUni(numNodes).getPIDs();
     }
 }
