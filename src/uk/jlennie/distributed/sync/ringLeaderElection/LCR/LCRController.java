@@ -15,6 +15,6 @@ public class LCRController extends genericRingLEController {
 
     @Override
     protected Process<LEMessage, Boolean> constructDefaultProcess(int pid) {
-        return null;
+        return new LCRProcess(pid);
     }
 }

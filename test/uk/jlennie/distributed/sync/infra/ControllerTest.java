@@ -2,6 +2,7 @@ package uk.jlennie.distributed.sync.infra;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import uk.jlennie.distributed.sync.ringLeaderElection.CreateRing;
 import uk.jlennie.distributed.util.GraphEdge;
 
 import java.util.*;
@@ -57,7 +58,8 @@ class ControllerTest {
 
     @Test
     void testLargeNetworkCommunicatesTerminates() {
-        sut = getRingNetwork(10);
+        CreateRing c = new CreateRing(10);
+        sut = new BasicController(c.getPIDs(), c.getConnection());
 
         var result = sut.run();
 
@@ -66,25 +68,6 @@ class ControllerTest {
             assert(result.containsKey(i));
             Assertions.assertEquals(result.get(i), true);
         }
-    }
-
-    private BasicController getRingNetwork(int numNodes) {
-        List<Integer> nodes = new ArrayList<>();
-        for (int i = 0; i < numNodes; i ++) {
-            nodes.add(i);
-        }
-
-        List<GraphEdge> connections = new ArrayList<>();
-        for (int i = 0; i < numNodes; i ++) {
-            addBidirectional(connections, i, (i + 1) % numNodes);
-        }
-
-        return new BasicController(nodes, connections);
-    }
-
-    private static void addBidirectional(List<GraphEdge> connections, int first, int second) {
-        connections.add(new GraphEdge(first, second));
-        connections.add(new GraphEdge(second, first));
     }
 
     @Test

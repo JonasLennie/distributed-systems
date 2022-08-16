@@ -16,4 +16,5 @@ public class GraphEdge {
     public int getReader() {
         return reader;
     }
+
 }
