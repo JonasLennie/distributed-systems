@@ -1,5 +1,4 @@
-package uk.jlennie.distributed.sync;
-
+package uk.jlennie.distributed.sync.infra;
 class Connection<M> {
     private M message;
     private final int senderID;

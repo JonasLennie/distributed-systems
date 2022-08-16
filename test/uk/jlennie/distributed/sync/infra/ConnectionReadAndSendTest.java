@@ -1,4 +1,4 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.sync.infra;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,8 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.sync.infra;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import uk.jlennie.distributed.util.GraphEdge;
 
 import java.util.*;
 
@@ -30,10 +32,10 @@ class ControllerTest {
 
         var result = sut.run();
 
-        assertEquals(result.size(), 2);
+        Assertions.assertEquals(result.size(), 2);
         assert(result.containsKey(1) && result.containsKey(2));
-        assertEquals(result.get(1), false);
-        assertEquals(result.get(2), true);
+        Assertions.assertEquals(result.get(1), false);
+        Assertions.assertEquals(result.get(2), true);
     }
 
     @Test
@@ -47,10 +49,10 @@ class ControllerTest {
 
         var result = sut.run();
 
-        assertEquals(result.size(), 2);
+        Assertions.assertEquals(result.size(), 2);
         assert(result.containsKey(1) && result.containsKey(2));
-        assertEquals(result.get(1), true);
-        assertEquals(result.get(2), true);
+        Assertions.assertEquals(result.get(1), true);
+        Assertions.assertEquals(result.get(2), true);
     }
 
     @Test
@@ -59,10 +61,10 @@ class ControllerTest {
 
         var result = sut.run();
 
-        assertEquals(result.size(), 10);
+        Assertions.assertEquals(result.size(), 10);
         for (int i = 0; i < 10; i ++) {
             assert(result.containsKey(i));
-            assertEquals(result.get(i), true);
+            Assertions.assertEquals(result.get(i), true);
         }
     }
 

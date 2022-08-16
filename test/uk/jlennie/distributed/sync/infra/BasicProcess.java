@@ -1,4 +1,4 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.sync.infra;
 
 class BasicProcess extends Process<Integer, Boolean> {
     // Basic process stub

@@ -1,4 +1,6 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.sync.infra;
+
+import uk.jlennie.distributed.util.GraphEdge;
 
 import java.util.List;
 

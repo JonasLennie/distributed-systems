@@ -1,4 +1,4 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.sync.infra;
 
 class ConnectionSend<M> {
     private final Connection<M> c;

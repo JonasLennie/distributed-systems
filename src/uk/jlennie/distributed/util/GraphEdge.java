@@ -1,6 +1,6 @@
-package uk.jlennie.distributed.sync;
+package uk.jlennie.distributed.util;
 
-class GraphEdge {
+public class GraphEdge {
     private final int sender;
     private final int reader;
 
