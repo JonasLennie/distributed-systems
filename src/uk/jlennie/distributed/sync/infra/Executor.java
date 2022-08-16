@@ -14,9 +14,17 @@ final class Executor<M, R> {
     }
 
     public Map<Integer, R> run() {
+        setupProcesses();
+
         executeProgram();
 
         return results;
+    }
+
+    private void setupProcesses() {
+        for (Process<M, R> p : activeProcesses) {
+            p.setup();
+        }
     }
 
     private void executeProgram() {

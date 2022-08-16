@@ -30,6 +30,10 @@ public abstract class Process<M, R> {
 
     public abstract void readMessages();
 
+    public void setup() {
+
+    }
+
     public boolean isTerminated() {
         return terminated;
     }
