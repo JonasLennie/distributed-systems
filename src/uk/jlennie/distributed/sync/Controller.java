@@ -42,7 +42,7 @@ public abstract class Controller<M, R> {
     }
 
     private boolean eitherEdgeVertexNotInProcessList(GraphEdge edge) {
-        return !pidToProcess.containsKey(edge.getFrom()) || !pidToProcess.containsKey(edge.getTo());
+        return !pidToProcess.containsKey(edge.getSender()) || !pidToProcess.containsKey(edge.getReader());
     }
 
     private void addConnectionSafe(GraphEdge edge) {
@@ -53,11 +53,11 @@ public abstract class Controller<M, R> {
     }
 
     private void addIncomingConnection(GraphEdge edge, Connection<M> newConnection) {
-        pidToProcess.get(edge.getTo()).addNewIncoming(new ConnectionRead<>(newConnection));
+        pidToProcess.get(edge.getReader()).addNewIncoming(new ConnectionRead<>(newConnection));
     }
 
     private void addOutgoingConnection(GraphEdge edge, Connection<M> newConnection) {
-        pidToProcess.get(edge.getFrom()).addNewOutgoing(new ConnectionSend<>(newConnection));
+        pidToProcess.get(edge.getSender()).addNewOutgoing(new ConnectionSend<>(newConnection));
     }
 
     private void populateProcesses(List<Integer> processIDs) {

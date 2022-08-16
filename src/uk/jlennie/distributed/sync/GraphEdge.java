@@ -1,19 +1,19 @@
 package uk.jlennie.distributed.sync;
 
 class GraphEdge {
-    private int from;
-    private int to;
+    private final int sender;
+    private final int reader;
 
-    public GraphEdge(int from, int to) {
-        this.from = from;
-        this.to = to;
+    public GraphEdge(int sender, int reader) {
+        this.sender = sender;
+        this.reader = reader;
     }
 
-    public int getFrom() {
-        return from;
+    public int getSender() {
+        return sender;
     }
 
-    public int getTo() {
-        return to;
+    public int getReader() {
+        return reader;
     }
 }
