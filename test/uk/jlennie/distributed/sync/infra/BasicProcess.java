@@ -17,7 +17,7 @@ class BasicProcess extends Process<Integer, Boolean> {
 
     @Override
     public void sendMessages() {
-        for (var p : outgoingConnections)
+        for (var p : getOutgoingConnections())
             p.send(1);
     }
 
@@ -26,7 +26,7 @@ class BasicProcess extends Process<Integer, Boolean> {
         if (round > 0)
             terminate(false);
         else
-            for (var p : incomingConnections)
+            for (var p : getIncomingConnections())
                 processValue(p);
 
         round ++;

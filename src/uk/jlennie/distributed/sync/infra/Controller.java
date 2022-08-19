@@ -96,7 +96,7 @@ public abstract class Controller<M, R> {
 
     abstract protected Process<M, R> constructDefaultProcess(int pid);
 
-    public Map<Integer, R> run() {
+    public final Map<Integer, R> run() {
         return executor.run();
     }
 }

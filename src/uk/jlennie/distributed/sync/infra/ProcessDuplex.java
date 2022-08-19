@@ -3,7 +3,11 @@ package uk.jlennie.distributed.sync.infra;
 import java.util.*;
 
 public abstract class ProcessDuplex<M, R> extends Process<M, R> {
-    List<DuplexConnection<M>> duplexLinks;
+    private final List<DuplexConnection<M>> duplexLinks;
+
+    protected final List<DuplexConnection<M>> getDuplexLinks() {
+        return new ArrayList<>(duplexLinks);
+    }
 
     public ProcessDuplex(int pid) {
         super(pid);
@@ -11,13 +15,16 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
         duplexLinks = new ArrayList<>();
     }
 
-    class GetDuplexLinks {
-        Iterator<ConnectionRead<M>> incomingIter;
-        Iterator<ConnectionSend<M>> outgoingIter;
-        ConnectionRead<M> lastIncoming;
-        ConnectionSend<M> lastOutgoing;
+    private class GetDuplexLinks {
+        private final Iterator<ConnectionRead<M>> incomingIter;
+        private final Iterator<ConnectionSend<M>> outgoingIter;
+        private ConnectionRead<M> lastIncoming;
+        private ConnectionSend<M> lastOutgoing;
 
         public GetDuplexLinks() {
+            final List<ConnectionRead<M>> incomingConnections = _internal_getIncomingConnections();
+            final List<ConnectionSend<M>> outgoingConnections = _internal_getOutgoingConnections();
+
             incomingConnections.sort(Comparator.comparing(ConnectionRead::getSenderID));
             outgoingConnections.sort(Comparator.comparing(ConnectionSend::getReaderID));
 
@@ -25,7 +32,7 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
             outgoingIter = outgoingConnections.iterator();
         }
 
-        public void get() {
+        public void createLinks() {
             if (cantConsume())
                 return;
 
@@ -36,11 +43,12 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
 
             if (lastPairWorks()) {
                 addLastPair();
+                removeBoth();
             }
         }
 
         private boolean cantConsume() {
-            return incomingConnections.size() == 0 || outgoingConnections.size() == 0;
+            return getIncomingConnections().size() == 0 || getOutgoingConnections().size() == 0;
         }
 
         private void addLastPair() {
@@ -61,6 +69,7 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
             if (lastPairWorks()) {
                 addLastPair();
                 consumeBoth();
+                removeBoth();
             } else {
                 consumeOne();
             }
@@ -85,10 +94,12 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
             return lastIncoming.getSenderID() < lastOutgoing.getReaderID();
         }
 
-        private void consumeBoth() {
+        private void removeBoth() {
             incomingIter.remove();
             outgoingIter.remove();
+        }
 
+        private void consumeBoth() {
             consumeIncoming();
             consumeOutgoing();
         }
@@ -96,6 +107,6 @@ public abstract class ProcessDuplex<M, R> extends Process<M, R> {
 
     @Override
     public void setup() {
-        new GetDuplexLinks().get();
+        new GetDuplexLinks().createLinks();
     }
 }

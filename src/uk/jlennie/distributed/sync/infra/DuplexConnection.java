@@ -1,9 +1,9 @@
 package uk.jlennie.distributed.sync.infra;
 
-public class DuplexConnection<M> {
-    ConnectionSend<M> outgoingConnection;
-    ConnectionRead<M> incomingConnection;
-    int id;
+final public class DuplexConnection<M> {
+    private final ConnectionSend<M> outgoingConnection;
+    private final ConnectionRead<M> incomingConnection;
+    private final int id;
 
     public DuplexConnection(ConnectionSend<M> outgoingConnection, ConnectionRead<M> incomingConnection) {
         if (outgoingConnection.getReaderID() != incomingConnection.getSenderID())

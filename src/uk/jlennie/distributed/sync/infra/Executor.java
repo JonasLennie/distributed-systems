@@ -60,7 +60,7 @@ final class Executor<M, R> {
     }
 
     private void checkTerminated(Process<M, R> p) {
-        if (p.terminated)
+        if (p.isTerminated())
             addResultAndRemoveProcess(p);
     }
 

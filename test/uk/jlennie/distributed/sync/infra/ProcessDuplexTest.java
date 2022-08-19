@@ -43,6 +43,7 @@ class ProcessDuplexTest {
         sut.setup();
 
         assert sut.getDuplexConnections().isEmpty();
+        assertEquals(4, sut.getSizeOfIncomingPlusOutgoing());
     }
 
     @Test
@@ -53,6 +54,7 @@ class ProcessDuplexTest {
 
         assertEquals(1, sut.getDuplexConnections().size());
         assertEquals(13, sut.getDuplexConnections().get(0).getID());
+        assertEquals(0, sut.getSizeOfIncomingPlusOutgoing());
     }
 
     @Test
@@ -70,6 +72,7 @@ class ProcessDuplexTest {
 
 
         assertEquals(3, sut.getDuplexConnections().size());
+        assertEquals(3, sut.getSizeOfIncomingPlusOutgoing());
     }
 
 }

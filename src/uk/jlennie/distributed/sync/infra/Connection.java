@@ -1,5 +1,5 @@
 package uk.jlennie.distributed.sync.infra;
-class Connection<M> {
+final class Connection<M> {
     private M message;
     private final int senderID;
     private final int readerID;

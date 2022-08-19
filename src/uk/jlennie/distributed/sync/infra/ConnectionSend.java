@@ -1,6 +1,6 @@
 package uk.jlennie.distributed.sync.infra;
 
-public class ConnectionSend<M> {
+final public class ConnectionSend<M> {
     private final Connection<M> c;
 
     public int getReaderID() {

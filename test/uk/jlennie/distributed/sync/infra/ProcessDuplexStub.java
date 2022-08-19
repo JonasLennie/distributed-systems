@@ -1,6 +1,5 @@
 package uk.jlennie.distributed.sync.infra;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessDuplexStub extends ProcessDuplex<Integer, Integer> {
@@ -10,7 +9,11 @@ public class ProcessDuplexStub extends ProcessDuplex<Integer, Integer> {
     }
 
     public List<DuplexConnection<Integer>> getDuplexConnections() {
-        return new ArrayList<>(duplexLinks);
+        return getDuplexLinks();
+    }
+
+    public int getSizeOfIncomingPlusOutgoing() {
+        return getIncomingConnections().size() + getOutgoingConnections().size();
     }
 
     @Override

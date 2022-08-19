@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Process<M, R> {
-    protected final int pid;
-    protected List<ConnectionRead<M>> incomingConnections;
-    protected List<ConnectionSend<M>> outgoingConnections;
-    protected boolean terminated;
-    protected R result;
+    private final int pid;
+    private final List<ConnectionRead<M>> incomingConnections;
+    private final List<ConnectionSend<M>> outgoingConnections;
+    private boolean terminated;
+    private R result;
 
     public Process(int pid) {
         this.pid = pid;
@@ -16,6 +16,14 @@ public abstract class Process<M, R> {
         incomingConnections = new ArrayList<>();
         outgoingConnections = new ArrayList<>();
         terminated = false;
+    }
+
+    protected final List<ConnectionRead<M>> getIncomingConnections() {
+        return new ArrayList<>(incomingConnections);
+    }
+
+    protected final List<ConnectionSend<M>> getOutgoingConnections() {
+        return new ArrayList<>(outgoingConnections);
     }
 
     public void addNewIncoming(ConnectionRead<M> newConnection) {
@@ -30,26 +38,34 @@ public abstract class Process<M, R> {
 
     public abstract void readMessages();
 
+    protected final List<ConnectionRead<M>> _internal_getIncomingConnections() {
+        return incomingConnections;
+    }
+
+    protected final List<ConnectionSend<M>> _internal_getOutgoingConnections() {
+        return outgoingConnections;
+    }
+
     public void setup() {
 
     }
 
-    public boolean isTerminated() {
+    public final boolean isTerminated() {
         return terminated;
     }
 
-    public R getResult() throws RuntimeException {
+    public final R getResult() throws RuntimeException {
         if (!terminated)
             throw new RuntimeException("getResult Called Illegally");
 
         return result;
     }
 
-    public Integer getPid() {
+    public final Integer getPid() {
         return pid;
     }
 
-    protected void terminate(R terminatingValue) {
+    protected final void terminate(R terminatingValue) {
         terminated = true;
         result = terminatingValue;
     }
