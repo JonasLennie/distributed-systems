@@ -35,12 +35,12 @@ class BiDirectionalConnectionTest {
     void sendFromBiDirectionalConnectionReadInUnderlying() {
         sut.send(messageOut);
 
-        assertEquals(messageOut, baseConnectionOut.readMessage());
+        assertEquals(messageOut, baseConnectionOut.read());
     }
 
     @Test
     void readByBiDirectionalWhenSentInUnderlying() {
-        baseConnectionIn.sendMessage(messageIn);
+        baseConnectionIn.send(messageIn);
 
         assertEquals(messageIn, sut.read());
     }

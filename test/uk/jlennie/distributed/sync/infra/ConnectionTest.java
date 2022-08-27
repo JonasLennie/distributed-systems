@@ -19,14 +19,14 @@ class ConnectionTest {
 
     @Test
     void testSendMessageThenReadMatchesSent() {
-        sut.sendMessage(message);
+        sut.send(message);
 
-        assertEquals(message, sut.readMessage());
+        assertEquals(message, sut.read());
     }
 
     @Test
     void testReadBeforeAnythingWrittenGivesNull() {
-        assertNull(sut.readMessage());
+        assertNull(sut.read());
     }
 
     @Test
@@ -34,14 +34,14 @@ class ConnectionTest {
         // This was a bug :)
         sut = new Connection<>(senderID, readerID);
 
-        var testMessage = sut.readMessage();
+        var testMessage = sut.read();
 
         assertNull(testMessage);
     }
 
     @Test
     void justSendingDoesNotCrash() {
-        assertDoesNotThrow(() -> sut.sendMessage(message));
+        assertDoesNotThrow(() -> sut.send(message));
     }
 
     @Test
@@ -99,13 +99,13 @@ class ConnectionTest {
 
     @Test
     void ifReadTwiceFromConnectionThenClears() {
-        sut.sendMessage(message);
+        sut.send(message);
 
-        int firstRead = sut.readMessage();
+        int firstRead = sut.read();
 
         // Use non-primitive type to be able to test for null
         // Otherwise just test for 0
-        Integer secondRead = sut.readMessage();
+        Integer secondRead = sut.read();
 
         assertEquals(firstRead, message);
         assertNull(secondRead);

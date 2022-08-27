@@ -26,7 +26,7 @@ class ExecutorTest {
     void basicProcessReadsOne() {
         // Setup
         Connection<Integer> testConnection = new Connection<>();
-        testConnection.sendMessage(1);
+        testConnection.send(1);
         ConnectionRead<Integer> testReader = new ConnectionRead<>(testConnection);
 
         Process<Integer, Boolean> process = new BasicProcess(1);

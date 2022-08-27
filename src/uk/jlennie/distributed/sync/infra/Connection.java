@@ -1,5 +1,5 @@
 package uk.jlennie.distributed.sync.infra;
-final class Connection<M> {
+final class Connection<M> implements Readable<M>, Sendable<M> {
     private M message;
     private final int senderID;
     private final int readerID;
@@ -22,7 +22,7 @@ final class Connection<M> {
         return readerID;
     }
 
-    public M readMessage() {
+    public M read() {
         M messageToReturn = this.message;
 
         this.message = null;
@@ -30,7 +30,7 @@ final class Connection<M> {
         return messageToReturn;
     }
 
-    public void sendMessage(M message) {
+    public void send(M message) {
         this.message = message;
     }
 }

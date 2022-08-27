@@ -1,6 +1,6 @@
 package uk.jlennie.distributed.sync.infra;
 
-final public class DuplexConnection<M> {
+final public class DuplexConnection<M> implements Readable<M>, Sendable<M> {
     private final ConnectionSend<M> outgoingConnection;
     private final ConnectionRead<M> incomingConnection;
     private final int id;
@@ -25,4 +25,5 @@ final public class DuplexConnection<M> {
     public int getID() {
         return id;
     }
+
 }

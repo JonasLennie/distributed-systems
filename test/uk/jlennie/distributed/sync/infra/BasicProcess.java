@@ -6,13 +6,18 @@ class BasicProcess extends Process<Integer, Boolean> {
     // Otherwise terminates false on second go
     // Sends 1 to all connected processes
 
-    // With controller, will terminate false if has no incoming connections
+    // With controller, will terminate false if it has no incoming connections
     // Otherwise will terminate true
 
     int round;
 
     public BasicProcess(int pid) {
         super(pid);
+    }
+
+    @Override
+    public Process<Integer, Boolean> newInstance(int pid) {
+        return new BasicProcess(pid);
     }
 
     @Override

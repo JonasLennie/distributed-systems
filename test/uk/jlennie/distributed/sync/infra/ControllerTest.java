@@ -9,12 +9,12 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
-    BasicController sut;
+    Parser<Integer, Boolean> sut;
 
     @Test
     void testSingleNodeNoConnections() {
         int singlePID = 1;
-        sut = new BasicController(List.of(singlePID), new ArrayList<>());
+        sut = new Parser<>(List.of(singlePID), new ArrayList<>(), new BasicProcess(0));
 
         Map<Integer, Boolean> result = sut.run();
 
@@ -25,9 +25,10 @@ class ControllerTest {
 
     @Test
     void testTwoNodesOneConnectionTerminates() {
-        sut = new BasicController(
+        sut = new Parser<>(
                 Arrays.asList(1, 2),
-                List.of(new GraphEdge(1, 2))
+                List.of(new GraphEdge(1, 2)),
+                new BasicProcess(0)
         );
 
         var result = sut.run();
@@ -40,12 +41,13 @@ class ControllerTest {
 
     @Test
     void testTwoNodesBiDirectionalTerminates() {
-        sut = new BasicController(
+        sut = new Parser<>(
                 Arrays.asList(1, 2),
                 Arrays.asList(
                         new GraphEdge(1, 2),
-                        new GraphEdge(2, 1)
-                ));
+                        new GraphEdge(2, 1
+                )),
+                new BasicProcess(0));
 
         var result = sut.run();
 
@@ -60,8 +62,8 @@ class ControllerTest {
         List<Integer> PIDs = Arrays.asList(1, 1, 2, 3);
 
         assertThrows(RuntimeException.class
-                , () -> sut = new BasicController(
-                        PIDs, new ArrayList<>()
+                , () -> sut = new Parser<>(
+                        PIDs, new ArrayList<>(), new BasicProcess(0)
                 ));
     }
 
@@ -71,8 +73,8 @@ class ControllerTest {
         GraphEdge connection = new GraphEdge(3, 4);
 
         assertThrows(RuntimeException.class,
-                () -> sut = new BasicController(
-                        PIDs, List.of(connection)
+                () -> sut = new Parser<>(
+                        PIDs, List.of(connection), new BasicProcess(0)
                 ));
     }
 
@@ -82,8 +84,8 @@ class ControllerTest {
         GraphEdge connection = new GraphEdge(3, 3);
 
         assertThrows(RuntimeException.class,
-                () -> sut = new BasicController(
-                        PIDs, List.of(connection)
+                () -> sut = new Parser<>(
+                        PIDs, List.of(connection), new BasicProcess(0)
                 ));
     }
 }

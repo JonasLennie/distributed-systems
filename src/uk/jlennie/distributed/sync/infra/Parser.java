@@ -4,11 +4,14 @@ import uk.jlennie.distributed.util.GraphEdge;
 
 import java.util.*;
 
-public abstract class Controller<M, R> {
+public class Parser<M, R> {
     private final Executor<M, R> executor;
     private final Map<Integer, Process<M, R>> pidToProcess;
+    private final Process<M, R> processPrototype;
 
-    public Controller(List<Integer> processIDs, List<GraphEdge> connections) {
+    public Parser(List<Integer> processIDs, List<GraphEdge> connections, Process<M, R> processType) {
+        this.processPrototype = processType;
+
         pidToProcess = new HashMap<>();
 
         populateProcesses(processIDs);
@@ -94,7 +97,9 @@ public abstract class Controller<M, R> {
         return !processIDs.equals(processIDs.stream().distinct().toList());
     }
 
-    abstract protected Process<M, R> constructDefaultProcess(int pid);
+    private Process<M, R> constructDefaultProcess(int pid) {
+        return processPrototype.newInstance(pid);
+    }
 
     public final Map<Integer, R> run() {
         return executor.run();

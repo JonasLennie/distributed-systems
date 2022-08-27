@@ -18,6 +18,8 @@ public abstract class Process<M, R> {
         terminated = false;
     }
 
+    public abstract Process<M, R> newInstance(int pid);
+
     protected final List<ConnectionRead<M>> getIncomingConnections() {
         return new ArrayList<>(incomingConnections);
     }

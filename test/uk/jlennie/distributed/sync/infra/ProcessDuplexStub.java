@@ -8,6 +8,11 @@ public class ProcessDuplexStub extends ProcessDuplex<Integer, Integer> {
         super(pid);
     }
 
+    @Override
+    public Process<Integer, Integer> newInstance(int pid) {
+        return new ProcessDuplexStub(pid);
+    }
+
     public List<DuplexConnection<Integer>> getDuplexConnections() {
         return getDuplexLinks();
     }

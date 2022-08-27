@@ -1,26 +1,49 @@
 package uk.jlennie.distributed.sync.ringLeaderElection;
 
 import uk.jlennie.distributed.sync.infra.DuplexConnection;
-import uk.jlennie.distributed.sync.infra.Process;
 
-public class RingProcessBiDirectional<M> extends Process<M, Boolean> {
-    DuplexConnection<M> leftConnection;
-    DuplexConnection<M> rightConnection;
+ public abstract class RingProcessBiDirectional extends RingProcessGeneric {
+    private DuplexConnection<RingMessage> leftConnection;
+    private DuplexConnection<RingMessage> rightConnection;
 
-    M rightCache;
-    M leftCache;
+    RingMessage rightCache;
+    RingMessage leftCache;
 
     public RingProcessBiDirectional(int pid) {
         super(pid);
+
+        rightCache = null;
+        leftCache = null;
     }
 
     @Override
-    public void sendMessages() {
+    public void setup() {
+        super.setup();
 
+        if (!rightConnectionProfileForRing())
+            throw new RuntimeException("Bad set of connections for bidirectional ring.");
+
+        leftConnection = getDuplexLinks().get(0);
+        rightConnection = getDuplexLinks().get(1);
+    }
+
+     @Override
+     protected final void sendFromCache() {
+         leftConnection.send(leftCache);
+         rightConnection.send(rightCache);
+     }
+
+     private boolean rightConnectionProfileForRing() {
+        return getOutgoingConnections().isEmpty() && getIncomingConnections().isEmpty() & getDuplexLinks().size() == 2;
     }
 
     @Override
-    public void readMessages() {
+    public final void readMessages() {
+        RingMessage leftMessage = leftConnection.read();
+        RingMessage rightMessage = rightConnection.read();
 
+        readMessage(rightMessage);
+        readMessage(leftMessage);
     }
+
 }
